@@ -1,11 +1,12 @@
-import Stack from "../live-preview-sdk/index.d"
 import * as Utils from "@contentstack/utils"
+
+import Stack from "../live-preview-sdk-ts"
 
 const liveEdit = process.env.CONTENTSTACK_LIVE_EDIT_TAGS === "true"
 
-export const jsonToHtmlParse = entry => {
+export const jsonToHtmlParse = (entry: any) => {
   const renderOption = {
-    ["span"]: (node, next) => next(node.children),
+    ["span"]: (node: any, next: any) => next(node.children),
   }
 
   return Utils.jsonToHTML({
@@ -24,7 +25,7 @@ export const jsonToHtmlParse = entry => {
 }
 
 export const getHeaderRes = async () => {
-  const response = await Stack.getEntry({
+  const response: any = await Stack.getEntry({
     contentTypeUid: "header",
     referenceFieldPath: ["navigation_menu.page_reference"],
     jsonRtePath: ["notification_bar.announcement_text"],
@@ -35,7 +36,7 @@ export const getHeaderRes = async () => {
 }
 
 export const getFooterRes = async () => {
-  const response = await Stack.getEntry({
+  const response: any = await Stack.getEntry({
     contentTypeUid: "footer",
     referenceFieldPath: undefined,
     jsonRtePath: ["copyright"],
@@ -45,18 +46,20 @@ export const getFooterRes = async () => {
 }
 
 export const getAllEntries = async () => {
-  const response = await Stack.getEntry({
+  const response: any = await Stack.getEntry({
     contentTypeUid: "page",
     referenceFieldPath: undefined,
     jsonRtePath: undefined,
   })
   liveEdit &&
-    response[0].forEach(entry => Utils.addEditableTags(entry, "page", true))
+    response[0].forEach((entry: any) =>
+      Utils.addEditableTags(entry, "page", true)
+    )
   return response[0]
 }
 
-export const getPageRes = async entryUrl => {
-  const response = await Stack.getEntryByUrl({
+export const getPageRes = async (entryUrl: string) => {
+  const response: any = await Stack.getEntryByUrl({
     contentTypeUid: "page",
     entryUrl,
     referenceFieldPath: ["page_components.from_blog.featured_blogs"],
@@ -70,21 +73,37 @@ export const getPageRes = async entryUrl => {
   return response[0]
 }
 
+export const getPageByUrl = async (
+  contentTypeUid: string,
+  entryUrl: string,
+  referenceFieldPath?: [],
+  jsonRtePath?: []
+) => {
+  const response: any = await Stack.getEntryByUrl({
+    contentTypeUid: contentTypeUid,
+    entryUrl,
+    referenceFieldPath,
+    jsonRtePath,
+  })
+  liveEdit && Utils.addEditableTags(response[0], "dummy", true)
+  return response
+}
+
 export const getBlogListRes = async () => {
-  const response = await Stack.getEntry({
+  const response: any = await Stack.getEntry({
     contentTypeUid: "blog_post",
     referenceFieldPath: ["author", "related_post"],
     jsonRtePath: ["body"],
   })
   liveEdit &&
-    response[0].forEach(entry =>
+    response[0].forEach((entry: any) =>
       Utils.addEditableTags(entry, "blog_post", true)
     )
   return response[0]
 }
 
-export const getBlogPostRes = async entryUrl => {
-  const response = await Stack.getEntryByUrl({
+export const getBlogPostRes = async (entryUrl: string) => {
+  const response: any = await Stack.getEntryByUrl({
     contentTypeUid: "blog_post",
     entryUrl,
     referenceFieldPath: ["author", "related_post"],

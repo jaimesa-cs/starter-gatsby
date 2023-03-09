@@ -1,19 +1,21 @@
-import * as contentstack from "contentstack"
 import * as Utils from "@contentstack/utils"
+import * as contentstack from "contentstack"
+
 import ContentstackLivePreview from "@contentstack/live-preview-utils"
 
-const Stack = contentstack.Stack({
-  api_key: process.env.CONTENTSTACK_API_KEY,
-  delivery_token: process.env.CONTENTSTACK_DELIVERY_TOKEN,
-  environment: process.env.CONTENTSTACK_ENVIRONMENT,
+export const Stack = contentstack.Stack({
+  api_key: process.env.CONTENTSTACK_API_KEY || "",
+  delivery_token: process.env.CONTENTSTACK_DELIVERY_TOKEN || "",
+  environment: process.env.CONTENTSTACK_ENVIRONMENT || "",
   live_preview: {
-    management_token: process.env.CONTENTSTACK_MANAGEMENT_TOKEN,
+    management_token: process.env.CONTENTSTACK_MANAGEMENT_TOKEN || "",
     enable: true,
-    host: process.env.CONTENTSTACK_API_HOST,
+    host: process.env.CONTENTSTACK_API_HOST || "",
   },
+  //@ts-ignore
   stackDetails: {
-    apiKey: process.env.CONTENTSTACK_API_KEY,
-    environment: process.env.CONTENTSTACK_ENVIRONMENT,
+    apiKey: process.env.CONTENTSTACK_API_KEY || "",
+    environment: process.env.CONTENTSTACK_ENVIRONMENT || "",
   },
 })
 
@@ -23,6 +25,7 @@ if (process.env.CONTENTSTACK_API_HOST) {
 
 ContentstackLivePreview.init({
   enable: process.env.CONTENTSTACK_LIVE_PREVIEW === "true",
+  //@ts-ignore
   stackSdk: Stack,
   clientUrlParams: {
     host: process.env.CONTENTSTACK_APP_HOST,
@@ -31,14 +34,15 @@ ContentstackLivePreview.init({
 })
 
 export const onEntryChange = ContentstackLivePreview.onEntryChange
+export const unsubscribe = ContentstackLivePreview.unsubscribeOnEntryChange
 
 const renderOption = {
-  ["span"]: (node, next) => {
+  ["span"]: (node: any, next: any) => {
     return next(node.children)
   },
 }
 
-export default {
+const api = {
   /**
    *
    * fetches all the entries from specific content-type
@@ -47,7 +51,7 @@ export default {
    * @param {* Json RTE path} jsonRtePath
    *
    */
-  getEntry({ contentTypeUid, referenceFieldPath, jsonRtePath }) {
+  getEntry({ contentTypeUid, referenceFieldPath, jsonRtePath }: any) {
     return new Promise((resolve, reject) => {
       const query = Stack.ContentType(contentTypeUid).Query()
       if (referenceFieldPath) query.includeReference(referenceFieldPath)
@@ -81,7 +85,12 @@ export default {
    * @param {* Json RTE path} jsonRtePath
    * @returns
    */
-  getEntryByUrl({ contentTypeUid, entryUrl, referenceFieldPath, jsonRtePath }) {
+  getEntryByUrl({
+    contentTypeUid,
+    entryUrl,
+    referenceFieldPath,
+    jsonRtePath,
+  }: any) {
     return new Promise((resolve, reject) => {
       const blogQuery = Stack.ContentType(contentTypeUid).Query()
       if (referenceFieldPath) blogQuery.includeReference(referenceFieldPath)
@@ -104,3 +113,5 @@ export default {
     })
   },
 }
+
+export default api

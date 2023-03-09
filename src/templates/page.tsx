@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react"
-import { graphql } from "gatsby"
-import SEO from "../components/SEO"
+import React, { useEffect, useState } from "react"
+import { getPageRes, jsonToHtmlParse } from "../helper-ts/"
+
 import Layout from "../components/Layout"
-import { useLocation } from "@reach/router"
-import { onEntryChange } from "../live-preview-sdk/index.d"
-import { getPageRes, jsonToHtmlParse } from "../helper/index.d"
-import RenderComponents from "../components/RenderComponents"
 import { PageProps } from "../typescript/template"
+import RenderComponents from "../components/RenderComponents"
+import SEO from "../components/SEO"
+import { graphql } from "gatsby"
+import { onEntryChange } from "../live-preview-sdk-ts/"
+import { useLocation } from "@reach/router"
 
 const Page = ({ data: { contentstackPage } }: PageProps) => {
   const { pathname } = useLocation()

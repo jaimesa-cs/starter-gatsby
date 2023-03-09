@@ -41,7 +41,8 @@
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
-    "develop": "gatsby develop -p 3000",
+    "dev": "gatsby develop -p 3000",
+    "debug-dev": "node --nolazy node_modules/.bin/gatsby develop --inspect-brk",
     "format": "prettier --write \"**/*.{js,css,html,jsx,ts,tsx,json,md}\"",
     "start": "npm run develop",
     "serve": "gatsby serve",

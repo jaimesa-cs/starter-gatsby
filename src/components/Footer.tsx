@@ -1,11 +1,19 @@
-import { Link, useStaticQuery, graphql } from "gatsby"
-import React, { useState, useEffect } from "react"
-import parser from "html-react-parser"
-import { connect } from "react-redux"
+import {
+  DispatchData,
+  Entry,
+  FooterProps,
+  Links,
+  Menu,
+  Social,
+} from "../typescript/layout"
+import { Link, graphql, useStaticQuery } from "gatsby"
+import React, { useEffect, useState } from "react"
+import { getAllEntries, getFooterRes, jsonToHtmlParse } from "../helper-ts/"
+
 import { actionFooter } from "../store/actions/state.action"
-import { onEntryChange } from "../live-preview-sdk/index.d"
-import { getFooterRes, getAllEntries, jsonToHtmlParse } from "../helper/index.d"
-import { DispatchData, Entry, FooterProps, Links, Social, Menu } from "../typescript/layout";
+import { connect } from "react-redux"
+import { onEntryChange } from "../live-preview-sdk-ts/"
+import parser from "html-react-parser"
 
 const queryLayout = () => {
   const data = useStaticQuery(graphql`
@@ -105,22 +113,24 @@ const Footer = ({ dispatch }: DispatchData) => {
         </div>
         <div className="col-quarter social-link">
           <div className="social-nav">
-            {getFooter.social.social_share.map((social: Social, index: number) => {
-              return (
-                <a
-                  href={social.link?.href}
-                  title={social.link.title.toLowerCase()}
-                  key={index}
-                  className="footer-social-links"
-                >
-                  <img
-                    {...social.icon.$?.url}
-                    src={social.icon?.url}
-                    alt="social-icon"
-                  />
-                </a>
-              )
-            })}
+            {getFooter.social.social_share.map(
+              (social: Social, index: number) => {
+                return (
+                  <a
+                    href={social.link?.href}
+                    title={social.link.title.toLowerCase()}
+                    key={index}
+                    className="footer-social-links"
+                  >
+                    <img
+                      {...social.icon.$?.url}
+                      src={social.icon?.url}
+                      alt="social-icon"
+                    />
+                  </a>
+                )
+              }
+            )}
           </div>
         </div>
       </div>

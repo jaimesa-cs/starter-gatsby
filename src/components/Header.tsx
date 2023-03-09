@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react"
+import { DispatchData, Entry, HeaderProps, Menu } from "../typescript/layout"
 import { Link, graphql, useStaticQuery } from "gatsby"
-import parse from "html-react-parser"
-import { connect } from "react-redux"
+import React, { useEffect, useState } from "react"
+import { getAllEntries, getHeaderRes, jsonToHtmlParse } from "../helper-ts/"
+
 import Tooltip from "./ToolTip"
-import jsonIcon from "../images/json.svg"
-import { getHeaderRes, jsonToHtmlParse, getAllEntries } from "../helper/index.d"
-import { onEntryChange } from "../live-preview-sdk/index.d"
 import { actionHeader } from "../store/actions/state.action"
-import { DispatchData, Entry, HeaderProps, Menu } from "../typescript/layout";
+import { connect } from "react-redux"
+import jsonIcon from "../images/json.svg"
+import { onEntryChange } from "../live-preview-sdk-ts/"
+import parse from "html-react-parser"
 
 const queryHeader = () => {
   const query = graphql`
@@ -48,7 +49,7 @@ const Header = ({ dispatch }: DispatchData) => {
     if (ent.length !== newHeader.navigation_menu.length) {
       ent.forEach(entry => {
         const hFound = newHeader?.navigation_menu.find(
-          (navLink) => navLink.label === entry.title
+          navLink => navLink.label === entry.title
         )
         if (!hFound) {
           newHeader.navigation_menu?.push({
@@ -78,7 +79,10 @@ const Header = ({ dispatch }: DispatchData) => {
 
   return (
     <header className="header">
-      <div className="note-div" {...getHeader.notification_bar.$?.announcement_text}>
+      <div
+        className="note-div"
+        {...getHeader.notification_bar.$?.announcement_text}
+      >
         {getHeader.notification_bar.show_announcement &&
           typeof getHeader.notification_bar.announcement_text === "string" &&
           parse(getHeader.notification_bar.announcement_text)}
@@ -126,7 +130,13 @@ const Header = ({ dispatch }: DispatchData) => {
           </ul>
         </nav>
         <div className="json-preview">
-          <Tooltip content="JSON Preview" direction='top' dynamic={false} delay={200} status={0}>
+          <Tooltip
+            content="JSON Preview"
+            direction="top"
+            dynamic={false}
+            delay={200}
+            status={0}
+          >
             <span data-bs-toggle="modal" data-bs-target="#staticBackdrop">
               <img src={jsonIcon} alt="JSON Preview icon" />
             </span>

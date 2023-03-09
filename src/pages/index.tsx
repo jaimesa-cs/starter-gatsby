@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react"
-import { graphql } from "gatsby"
+import { getPageRes, jsonToHtmlParse } from "../helper-ts/"
+
 import Layout from "../components/Layout"
-import SEO from "../components/SEO"
-import RenderComponents from "../components/RenderComponents"
-import { onEntryChange } from "../live-preview-sdk/index.d"
-import { getPageRes, jsonToHtmlParse } from "../helper/index.d"
 import { PageProps } from "../typescript/template"
+import RenderComponents from "../components/RenderComponents"
+import SEO from "../components/SEO"
+import { graphql } from "gatsby"
+import { onEntryChange } from "../live-preview-sdk-ts/"
 
 const Home = ({ data: { contentstackPage } }: PageProps) => {
   jsonToHtmlParse(contentstackPage)

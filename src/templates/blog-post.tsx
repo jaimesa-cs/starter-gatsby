@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from "react"
-import moment from "moment"
-import { graphql } from "gatsby"
-import SEO from "../components/SEO"
-import parser from "html-react-parser"
-import Layout from "../components/Layout"
-import { useLocation } from "@reach/router"
-import { onEntryChange } from "../live-preview-sdk/index.d"
-import ArchiveRelative from "../components/ArchiveRelative"
-import RenderComponents from "../components/RenderComponents"
-import { getPageRes, getBlogPostRes, jsonToHtmlParse } from "../helper/index.d"
-import { PageProps } from "../typescript/template"
+import React, { useEffect, useState } from "react"
+import { getBlogPostRes, getPageRes, jsonToHtmlParse } from "../helper-ts/"
 
-const blogPost = ({ data: { contentstackBlogPost, contentstackPage } }: PageProps) => {
+import ArchiveRelative from "../components/ArchiveRelative"
+import Layout from "../components/Layout"
+import { PageProps } from "../typescript/template"
+import RenderComponents from "../components/RenderComponents"
+import SEO from "../components/SEO"
+import { graphql } from "gatsby"
+import moment from "moment"
+import { onEntryChange } from "../live-preview-sdk-ts/"
+import parser from "html-react-parser"
+import { useLocation } from "@reach/router"
+
+const blogPost = ({
+  data: { contentstackBlogPost, contentstackPage },
+}: PageProps) => {
   const { pathname } = useLocation()
   jsonToHtmlParse(contentstackBlogPost)
 
@@ -67,9 +70,7 @@ const blogPost = ({ data: { contentstackBlogPost, contentstackPage } }: PageProp
               </h2>
             )}
             <ArchiveRelative
-              data={
-                getEntry.post.related_post && (getEntry.post.related_post)
-              }
+              data={getEntry.post.related_post && getEntry.post.related_post}
             />
           </div>
         </div>
